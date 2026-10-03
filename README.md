@@ -1,3 +1,7 @@
+**Videos de la practica:** [Ver videos en OneDrive](https://1drv.ms/f/c/6b63aaec5c0ec7fc/IgDIK3ZKiVDHSqMyiQD1d0EqAV-zz2bVrkTrJduTAsyBIc8?e=ad0NjO)
+
+---
+
 # Práctica 2 — VPN site-to-site (Infraestructura 2)
 
 ## Objetivo
