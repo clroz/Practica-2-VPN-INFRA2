@@ -1,4 +1,0 @@
-Repositorio: https://github.com/clroz/Practica-2-VPN-INFRA2
-Video demostrativo (YouTube u OneDrive institucional): PENDIENTE DE GRABACIÓN Y ENLACE
-
-El video final debe durar como máximo 10 minutos, mostrar fecha y hora, incluir rostro y voz, y demostrar únicamente el objetivo de seguridad de INFRA2. No reutilizar el video de otra infraestructura.
