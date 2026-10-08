@@ -23,7 +23,7 @@ El mapa comprobado de interfaces, puertos, imágenes y estado inicial está en [
 
 ## Estado actual
 
-La topología PNETLab activa se inspeccionó para asociar los puertos. Aún no se ha aplicado direccionamiento ni configuración de VPN/políticas. Los dos servidores activos usan una imagen Ubuntu/Apache; el Jump Server no tiene RDP y no hay una imagen Windows Server instalada en PNETLab. Por ello, RDS RemoteApp y RD Web Client aún no pueden configurarse con los nodos actuales.
+La topología activa se inspeccionó el 8 de octubre de 2026. El ISO de Windows Server 2022 y el disco virtual ya están en PNETLab, y se creó un nodo Windows; sin embargo, Windows aún no está instalado, el nodo está conectado al enlace de `RED DEVICE` y el Jump Ubuntu sigue conectado a FortiGate `port3`. La VPN, el direccionamiento, DHCP, VLAN, las políticas y RDS siguen pendientes de instalación, configuración y validación. El detalle comprobado está en [estado actual de INFRA2](docs/estado-actual-infra2.md).
 
 El plan de direccionamiento propuesto y la limitación de imágenes se detallan en [puertos y enlaces](docs/puertos-topologia-activa.md). Los scripts de inspección usados están en `scripts/`.
 

@@ -1,38 +1,30 @@
-# Inventario de puertos y enlaces de INFRA2
+# Puertos y enlaces comprobados en INFRA2
 
-Inspección de solo lectura del archivo activo `/opt/unetlab/labs/DMZ y Jump Server INFRA2.unl` en PNETLab. La configuración de FortiGate debe realizarse y demostrarse desde su GUI.
+La topología se descargó del archivo activo de PNETLab el 8 de octubre de 2026. El mapa describe el cableado actual; no implica que los equipos o controles de seguridad ya estén configurados.
 
-## Cableado confirmado
+## Conexiones del archivo activo
 
-| Equipo | Interfaz | Conectado a | Función prevista |
+| Equipo | Interfaz | Conectado a | Estado y función objetivo |
 |---|---|---|---|
-| RED DEVICE | `eth1` | ISP `eth1` | Enlace WAN del lado del cliente |
-| RED DEVICE | `eth2` | Red `PCiface_1` / PC `eth1` | LAN del usuario, VLAN 10 |
-| ISP | `eth2` | FortiGate `port1` | WAN del FortiGate |
-| FortiGate | `port2` | WEB-SERVER `eth1` | LAN dedicada del servidor web |
-| FortiGate | `port3` | JUMP-SERVER `eth1` | LAN dedicada del Jump Server |
-| PC | `eth1` | Red `PCiface_1` / RED DEVICE `eth2` | Cliente de la VPN |
+| RED DEVICE | `eth1` | ISP `eth1`, red `RED DEVICEiface_1` | Enlace exterior del cliente; el contenedor activo es Ubuntu Server. |
+| RED DEVICE | `eth2` | Winserver `e0`, red `Winserveriface_0` | Enlace actual incorrecto para el Jump Server; Windows está del lado cliente. |
+| ISP | `eth2` | FortiGate `port1`, red `ISPiface_2` | WAN simulada del FortiGate. |
+| FortiGate | `port2` | WEB-SERVER `eth1`, red `WEB-SERVERiface_1` | LAN prevista del Web Server. |
+| FortiGate | `port3` | JUMP-SERVER Ubuntu `eth1`, red `Fortinetiface_2` | LAN actual del Jump; debe alojar el Windows Server cuando se reubique. |
+| PC | Sin interfaz conectada en el archivo activo | — | Nodo Chrome desconectado; falta ubicar el cliente. |
 
-La topología activa no contiene un switch Cisco. `RED DEVICE` es un router Ubuntu 20.04. PNETLab tiene disponible `pnetlab/ubuntu-router-ipsec:infra3-ready`, que incluye strongSwan, iptables y dnsmasq; la imagen actual `ubuntu_sv` no incluye esos servicios.
+El Winserver aparece como nodo QEMU con 2 CPU, 4096 MB de RAM y una interfaz. La ISO está en `cdrom.iso`; `virtioa.qcow2` tiene 50 GB de tamaño virtual, pero su archivo ocupa unos 196 KB, señal de que Windows aún no se ha instalado. No añadirlo a las pruebas como un servidor operativo.
 
-## Estado de las interfaces y servicios observado
+## Plan de direccionamiento propuesto, aún no aplicado
 
-El archivo activo asigna las conexiones anteriores, pero sus campos de direccionamiento IPv4 de los nodos están vacíos. Las direcciones `10.177.0.x` vistas en Docker son de administración de PNETLab; no son las redes de usuario, WAN ni servidor del ejercicio.
+Los bloques `203.0.113.0/30` y `198.51.100.0/30` son rangos TEST-NET reservados para documentación y laboratorios aislados; no son direcciones públicas enrutables en Internet.
 
-`WEB-SERVER` y `JUMP-SERVER` están ejecutando `pnetlab/apache2:latest` (Ubuntu 20.04). Ambos exponen HTTP/HTTPS y SSH; el Jump Server no escucha en TCP 3389. La lista de imágenes QEMU instaladas solo muestra FortiGate 7.0.9 e IOSv2; no se encontró una imagen de Windows Server para habilitar RDS RemoteApp o RD Web Client.
-
-## Plan de direccionamiento propuesto
-
-Los bloques WAN son rangos TEST-NET reservados para documentación y laboratorios aislados; no son direcciones públicas enrutables en Internet.
-
-| Segmento | Red | Dirección sugerida |
+| Segmento | Red | Direcciones sugeridas |
 |---|---|---|
-| LAN de usuario, VLAN 10 | `192.168.10.0/25` | RED DEVICE `.1`; DHCP para clientes |
+| Red cliente, VLAN 10 | `192.168.10.0/25` | Gateway `.1`; DHCP para usuarios |
 | RED DEVICE ↔ ISP | `203.0.113.0/30` | ISP `.1`, RED DEVICE `.2` |
-| ISP ↔ FortiGate port1 | `198.51.100.0/30` | ISP `.1`, FortiGate `.2` |
-| LAN del Web Server, port2 | `192.168.30.0/29` | FortiGate `.1`, Web `.2` |
-| LAN del Jump Server, port3 | `192.168.40.0/29` | FortiGate `.1`, Jump `.2` |
+| ISP ↔ FortiGate `port1` | `198.51.100.0/30` | ISP `.1`, FortiGate `.2` |
+| Web Server, FortiGate `port2` | `192.168.30.0/29` | FortiGate `.1`, Web `.2` |
+| Jump Server, FortiGate `port3` | `192.168.40.0/29` | FortiGate `.1`, Windows Jump `.2` |
 
-La VPN debe incluir solamente VLAN 10 y la LAN del Jump Server. No debe incluir la LAN del Web Server. El firewall permitirá al usuario llegar al Jump Server; desde el Jump Server se limitará el tráfico al Web Server a HTTPS, RDP y SSH.
-
-> Este direccionamiento está propuesto y aún no se ha aplicado. Si el curso requiere bloques específicos, se debe sustituir antes de configurar.
+La selección final del tipo de VPN y de la función del equipo RED DEVICE debe corresponderse con el modo exigido por el profesor. Las políticas del FortiGate y su demostración se deben configurar y validar por GUI. La VPN solo debe alcanzar el Jump Server; desde Jump, el Web Server solo debe aceptar HTTPS, RDP y SSH.
