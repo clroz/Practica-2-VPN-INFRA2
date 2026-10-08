@@ -23,6 +23,7 @@
 - No se han verificado VLAN 10 `/25`, DHCP, LAN Web y Jump `/29`, IP pública simulada, túnel VPN, restricciones de acceso ni reglas de puertos desde la GUI de FortiGate.
 - Windows Server no está instalado. Por tanto, tampoco están configurados RDS, RemoteApp, RD Web Client ni las cuentas de usuario solicitadas.
 - No hay pruebas de aceptación ni evidencia de video para esta infraestructura todavía.
+- El acceso automatizado a la GUI de PNETLab encuentra una CAPTCHA interactiva. No se ha intentado eludirla; se requiere que una persona abra la GUI y complete el acceso para continuar la instalación visual.
 
 ## Criterio de cierre
 
