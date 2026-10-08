@@ -1,0 +1,2 @@
+#!/bin/sh
+docker run --rm --network none --entrypoint sh pnetlab/ubuntu-router-ipsec:infra3 -c 'cat /etc/os-release | head -n 3; for x in ip ipsec swanctl dhcpd dnsmasq iptables; do printf "%s=" "$x"; command -v "$x" || true; done; dpkg-query -W -f="\${binary:Package} \${Version}\n" 2>/dev/null | grep -E "strongswan|isc-dhcp|dnsmasq|iptables" || true'

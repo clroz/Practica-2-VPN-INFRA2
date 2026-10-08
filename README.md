@@ -1,46 +1,32 @@
-**Videos de la practica:** [Ver videos en OneDrive](https://1drv.ms/f/c/6b63aaec5c0ec7fc/IgDIK3ZKiVDHSqMyiQD1d0EqAV-zz2bVrkTrJduTAsyBIc8?e=ad0NjO)
+# DMZ y Jump Server (INFRA2)
 
----
+> **Video demostrativo:** pendiente de grabación después de validar los servicios. El video final se enlazará aquí.
 
-# Práctica 2 — VPN site-to-site (Infraestructura 2)
+## Propósito
 
-## Objetivo
+Construir un acceso remoto seguro mediante VPN IPsec desde la red de usuarios hacia un Jump Server, con acceso restringido al Web Server de Caja por HTTPS, RDP y SSH. El FortiGate se debe configurar y demostrar por GUI. Los usuarios de VLAN 10 reciben su dirección por DHCP; el usuario sin privilegios solo debe ver la aplicación web publicada, mientras que el usuario con privilegios dispone de Web, PuTTY y RDP.
 
-Comunicar el equipo de usuario con el servidor web a través de un túnel VPN site-to-site y comprobar que el tráfico entre ambas redes deja de pasar cuando el túnel está inactivo.
+## Topología activa
 
-## Topología propuesta
+![Diagrama de referencia de la práctica](docs/imagenes/topologia-infra2.png)
 
-![Diagrama de referencia de Infraestructura 2](docs/imagenes/topologia-infra2.png)
+El mapa comprobado de interfaces, puertos, imágenes y estado inicial está en [inventario de puertos y enlaces](docs/puertos-topologia-activa.md).
 
-El diagrama representa los componentes solicitados: un FortiGate, un peer de red del otro lado, un ISP que proporciona conectividad entre sus direcciones públicas, una red de usuario y una red de servidor. El equipo peer puede ser Cisco u otro fabricante compatible con IPsec.
+## Requisitos
 
-## Requisitos de la práctica
+- VPN entre el sitio del cliente y el sitio de servidores; la VPN solo permite llegar al Jump Server.
+- LAN de usuario en VLAN 10, `/25`, con DHCP.
+- Web Server y Jump Server en LAN distintas, cada una `/29`.
+- Desde Jump Server hacia Web Server, permitir únicamente TCP 443 (HTTPS), 3389 (RDP) y 22 (SSH).
+- Publicar por RDP RemoteApp y RD Web Client: Web para el usuario sin privilegios; Web, PuTTY y RDP para el usuario con privilegios.
+- FortiGate configurado y demostrado desde la GUI.
 
-- Configurar las interfaces y redes de ambos peers.
-- Configurar NAT donde corresponda para la salida hacia el ISP; el tráfico protegido por el túnel debe conservar las direcciones privadas y no recibir NAT.
-- Establecer el túnel IPsec site-to-site entre los peers.
-- Publicar el servidor web por HTTPS en una subred `/28`.
-- Conectar los usuarios a una subred `/25`, con VLAN 10 y DHCP.
-- Verificar el acceso usuario-servidor con el túnel activo y repetir la prueba con el túnel desactivado.
-- Ejecutar traceroute desde el equipo de usuario hacia el servidor.
-- Realizar la configuración y la demostración del FortiGate mediante su GUI.
+## Estado actual
 
-## Direccionamiento
+La topología PNETLab activa se inspeccionó para asociar los puertos. Aún no se ha aplicado direccionamiento ni configuración de VPN/políticas. Los dos servidores activos usan una imagen Ubuntu/Apache; el Jump Server no tiene RDP y no hay una imagen Windows Server instalada en PNETLab. Por ello, RDS RemoteApp y RD Web Client aún no pueden configurarse con los nodos actuales.
 
-El plan de direccionamiento debe asignarse según la matrícula y las redes disponibles en el laboratorio. No se fija aquí ningún bloque ni dirección pública para evitar documentar valores que no hayan sido confirmados para esta infraestructura.
+El plan de direccionamiento propuesto y la limitación de imágenes se detallan en [puertos y enlaces](docs/puertos-topologia-activa.md). Los scripts de inspección usados están en `scripts/`.
 
-## Estado de la evidencia
+## Evidencias
 
-La imagen incluida es el diagrama de referencia de la práctica. Por sí sola no demuestra que el túnel, el acceso HTTPS, DHCP, NAT o traceroute estén funcionando. Añade capturas de la GUI y salidas de las pruebas cuando se complete y verifique esta infraestructura.
-
-## Evidencias recomendadas para completar el repositorio
-
-1. Interfaces y direccionamiento de los peers.
-2. Estado del túnel IPsec y contadores de tráfico.
-3. Políticas de firewall y NAT.
-4. Concesión DHCP del usuario en VLAN 10.
-5. Acceso HTTPS al servidor con el túnel activo.
-6. Fallo de la comunicación protegida con el túnel inactivo y recuperación al volver a activarlo.
-7. Traceroute hacia la dirección del servidor.
-
-No incluir claves precompartidas, contraseñas ni capturas que las muestren.
+Se añadirán capturas de la GUI de FortiGate, del estado del túnel, las políticas, DHCP, las aplicaciones publicadas y las pruebas de acceso al completar la configuración. No se incluirán credenciales ni claves precompartidas.
